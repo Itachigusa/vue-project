@@ -1,11 +1,13 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import MyComponent from './components/MyComponent.vue'
 
 export default{
   components: {
     HelloWorld,
-    TheWelcome
+    TheWelcome,
+    MyComponent
   },
   data(){
     return {
@@ -24,6 +26,7 @@ export default{
   methods:{
     toggleShow(){
       this.isShow = !this.isShow;
+
       console.log(this.isShow);
     },
     reset(){
@@ -39,14 +42,13 @@ export default{
 
 <template>
   <header>
+    <MyComponent :msg=counter title="title" body="test"/>
     <p>{{counter}}</p>
     <button @click="reset"> reset </button>
     <button @click="incrementX(50)"> +50 </button>
     <button @click="toggleShow"> toggle </button>
     <img v-if="isShow" alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <button v-for="item in arr" @click="incrementX(item)">{{item}}</button>
-
     <div class="wrapper">
       <HelloWorld v-for="item in listArr" :msg="item" />
     </div>
@@ -55,18 +57,11 @@ export default{
         {{item}}
       </li>
     </ul>
-    <ul>
-      <li>{{car.name}}</li>
-      <li>{{car.speed}}</li>
-      <li>{{car.price}}</li>
-    </ul>
-    <p>{{car}}</p>
   </header>
   <main>
     <TheWelcome />
   </main>
 </template>
-
 <style scoped>
 header {
   line-height: 1.5;
