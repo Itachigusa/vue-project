@@ -1,40 +1,92 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import MyComponent from './components/MyComponent.vue'
+import Card from './components/Card.vue'
 
 export default{
   components: {
-    HelloWorld,
-    TheWelcome,
-    MyComponent
+    Card
   },
   data(){
     return {
-      hoge:"igyo",
-      isShow:true,
-      listArr:[0, 1, 3],
-      arr:[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610],
-      car:{
-        name: "kuruma",
-        speed:"hayai",
-        price:"takai"
-      },
-      counter:0
+      title:"神経衰弱",
+
+      turnCount:0,
+      currentState:0,
+
+      symbols:["♠","♣","♥","♦"],
+      values:["1","2","3","4","5","6","7","8","9","10","J","Q","K"],
+
+      firstValue:"",
+      firstIndex:0
     }
   },
   methods:{
-    toggleShow(){
-      this.isShow = !this.isShow;
+    openCard(value, index)
+    {
+      if(this.currentState == 2
+      || this.currentState == 3)
+      {
+        return;
+      }
 
-      console.log(this.isShow);
+      if(this.currentState == 0)
+      {
+        this.firstValue = value;
+        this.firstIndex = index;
+
+        this.currentState = 1;
+      }
+      else if(this.currentState == 1)
+      {
+        if(this.check(value))
+        {
+          this.currentState = 2;
+            setTimeout(() => {
+              this.currentState = 0;
+
+              this.firstIndex = 0;
+              this.firstValue = "";
+            }, 2000);
+        }
+        else
+        {
+          this.currentState = 3;
+            setTimeout(() => {
+              this.$refs.cards[this.firstIndex].setOpenState(false);
+              this.$refs.cards[index].setOpenState(false);
+
+              this.currentState = 0;
+
+              this.firstIndex = 0;
+              this.firstValue = "";
+            }, 2000);
+        }
+      }
+
+      this.$refs.cards[index].setOpenState(true);
     },
-    reset(){
-      this.counter = 0;
-    },
-    incrementX(add){
-      this.counter = this.counter + add;
-      console.log(this.counter);
+    check(value)
+    {
+      return this.firstValue == value;
+    }
+  },
+  computed:{
+    list()
+    {
+      var temp = [];
+      
+      for (let i = 0; i < 8; i++) 
+      {
+        var symbol = this.symbols[Math.floor(Math.random()*this.symbols.length)];
+        var value = this.values[Math.floor(Math.random()*this.values.length)];
+        temp.push(symbol+value);
+        temp.push(symbol+value);
+      }
+
+      for (let i = temp.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [temp[i], temp[j]] = [temp[j], temp[i]];
+      }
+      return temp;
     }
   }
 }
@@ -42,26 +94,27 @@ export default{
 
 <template>
   <header>
-    <MyComponent :msg=counter title="title" body="test"/>
-    <p>{{counter}}</p>
-    <button @click="reset"> reset </button>
-    <button @click="incrementX(50)"> +50 </button>
-    <button @click="toggleShow"> toggle </button>
-    <img v-if="isShow" alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-    <button v-for="item in arr" @click="incrementX(item)">{{item}}</button>
-    <div class="wrapper">
-      <HelloWorld v-for="item in listArr" :msg="item" />
-    </div>
-    <ul>
-      <li v-for="item in listArr">
-        {{item}}
-      </li>
-    </ul>
+    <h1>{{title}}</h1>
   </header>
   <main>
-    <TheWelcome />
+    <div v-if="currentState == 0">
+      Select 1st Card
+    </div>
+    <div v-if="currentState == 1">
+      Select 2nd Card
+    </div>
+    <div v-if="currentState == 2">
+      Success
+    </div>
+    <div v-if="currentState == 3">
+      Failed
+    </div>
+    <div v-for="i in 16">
+      <Card :index=i-1  :value = list[i-1] ref = "cards" @card-open="openCard"/>
+    </div>
   </main>
 </template>
+
 <style scoped>
 header {
   line-height: 1.5;

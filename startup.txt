@@ -1,0 +1,6 @@
+cd directory
+
+npm install
+npm run dev
+
+localhost:5173
