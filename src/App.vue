@@ -1,20 +1,6 @@
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import MyComponent from './components/MyComponent.vue'
 
 export default{
-  components: {
-    HelloWorld,
-    TheWelcome,
-    MyComponent
-  },
-  data(){
-    return {
-    }
-  },
-  methods:{
-  }
 }
 </script>
 
@@ -23,11 +9,10 @@ export default{
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
   </header>
   <main>
-    <TheWelcome />
-  </main>
   <router-link to="/">Home</router-link>
   <router-link to="/about"> About</router-link>
   <router-link to="/Welcome"> Welcome</router-link>
+  </main>
   <router-view />
 </template>
 <style scoped>
