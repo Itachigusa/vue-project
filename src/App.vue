@@ -11,56 +11,24 @@ export default{
   },
   data(){
     return {
-      hoge:"igyo",
-      isShow:true,
-      listArr:[0, 1, 3],
-      arr:[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610],
-      car:{
-        name: "kuruma",
-        speed:"hayai",
-        price:"takai"
-      },
-      counter:0
     }
   },
   methods:{
-    toggleShow(){
-      this.isShow = !this.isShow;
-
-      console.log(this.isShow);
-    },
-    reset(){
-      this.counter = 0;
-    },
-    incrementX(add){
-      this.counter = this.counter + add;
-      console.log(this.counter);
-    }
   }
 }
 </script>
 
 <template>
   <header>
-    <MyComponent :msg=counter title="title" body="test"/>
-    <p>{{counter}}</p>
-    <button @click="reset"> reset </button>
-    <button @click="incrementX(50)"> +50 </button>
-    <button @click="toggleShow"> toggle </button>
-    <img v-if="isShow" alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-    <button v-for="item in arr" @click="incrementX(item)">{{item}}</button>
-    <div class="wrapper">
-      <HelloWorld v-for="item in listArr" :msg="item" />
-    </div>
-    <ul>
-      <li v-for="item in listArr">
-        {{item}}
-      </li>
-    </ul>
+    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
   </header>
   <main>
     <TheWelcome />
   </main>
+  <router-link to="/">Home</router-link>
+  <router-link to="/about"> About</router-link>
+  <router-link to="/Welcome"> Welcome</router-link>
+  <router-view />
 </template>
 <style scoped>
 header {
